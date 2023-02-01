@@ -26,7 +26,7 @@ button {
 
 input,
 button {
-  padding: 10px 20px;
+  padding: 10px 10px;
   font-size: 1.1rem;
   border: none;
 }
@@ -42,12 +42,15 @@ input:focus {
   text-align: center;
   margin: 0 auto;
 }
-
-.pokedex {
-  margin: 0 30px;
+#pokedex {
+  margin: 0 auto;
+  max-width: 1500px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .pokemon {
-  margin-top: 40px;
+  margin: 8px;
   color: black;
   width: 200px;
   padding: 10px;

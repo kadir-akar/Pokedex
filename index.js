@@ -1,7 +1,71 @@
-function pokemonImg() {
-  fetch("https://pokeapi.co/api/v2/pokemon/bulbasaur")
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.log(error));
-}
-pokemonImg();
+const searchInput = document.querySelector("#poke-input");
+const seachBtn = document.querySelector(".btn-search");
+
+const colors = {
+  fire: "#FDDFDF",
+  grass: "#DEFDE0",
+  electric: "#FCF7DE",
+  water: "#DEF3FD",
+  ground: "#f4e7da",
+  rock: "#d5d5d4",
+  fairy: "#fceaff",
+  poison: "#d6b3ff",
+  bug: "#f8d5a3",
+  dragon: "#97b3e6",
+  psychic: "#eaeda1",
+  flying: "#F5F5F5",
+  fighting: "#E6E0D4",
+  normal: "#F5F5F5",
+  ice: "#e0f5ff ",
+};
+
+const pokeContainer = document.getElementById("pokedex");
+
+const pokeCount = 151;
+
+const initPokemon = async () => {
+  for (let i = 1; i <= pokeCount; i++) {
+    await getPokemon(i);
+  }
+};
+const getPokemon = async (id) => {
+  let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+  let res = await fetch(url);
+  let data = await res.json();
+  createPokemon(data);
+};
+const createPokemon = (pokemon) => {
+  const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+  const id = pokemon.id.toString().padStart(3, "0");
+  const type = pokemon.types[0].type.name;
+  const color = colors[type];
+
+  const pokemonEl = document.createElement("div");
+  pokemonEl.classList.add("pokemon");
+  pokemonEl.style.backgroundColor = `${color}`;
+  pokemonEl.innerHTML = `
+            <img
+              src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/${id}.png"
+              alt="${name} image"
+            />
+            <h4 class="id">#${id}</h4>
+            <div class="stats">
+            
+            <span class="poke-name">Name : ${name}</span>
+            <span class="abilities">Type : ${type} </span>
+            </div>`;
+  pokeContainer.appendChild(pokemonEl);
+};
+initPokemon();
+searchInput.addEventListener("input", (e) => {
+  const pokeNames = document.querySelectorAll(".stats");
+  const search = searchInput.value.toLowerCase();
+  console.log(search);
+
+  pokeNames.forEach((pokeName) => {
+    pokeName.parentElement.style.display = "block";
+    if (!pokeName.innerHTML.toLowerCase().includes(search)) {
+      pokeName.parentElement.style.display = "none";
+    }
+  });
+});
